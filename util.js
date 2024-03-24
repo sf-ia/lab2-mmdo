@@ -1,3 +1,4 @@
+// Допоміжна функція, яка створює елемент
 function createElement(element, parent, classes, id, text, grid) {
     const el = document.createElement(element);
 
@@ -11,6 +12,7 @@ function createElement(element, parent, classes, id, text, grid) {
     parent.appendChild(el);
 }
 
+// Допоміжна функція, яка округляє число, якщо потрібно (для виводу в таблицю)
 function roundstr(num) {
     if (num.toString().length > 4) {
         return num.toFixed(2);

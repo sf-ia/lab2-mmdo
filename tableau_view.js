@@ -1,11 +1,15 @@
+// Цей клас репрезентує HTML-елемент симплекс таблиці.
 class TableauView {
+    // Ініціалізуємо таблицю, створюємо елемент і заповнюємо шапку таблиці.
     constructor(main_count, added_count) {
-        this.element = document.createEvent("div");
+        this.element = document.createElement("div");
         this.element.id = "simplex-table";
         document.querySelector(".page-container").prepend(this.element);
+
         this.make_header(main_count, added_count);
     }
 
+    // Заповнюємо шапку.
     make_header(main_count, added_count) {
         for (const ht of [
             { id: "basis", text: "Базис" },
@@ -25,17 +29,19 @@ class TableauView {
             );
         }
 
+        // Клітинка-шапка для кожного стовпчика змінних.
         for (let i = 0; i < main_count + added_count; i++) {
             createElement(
                 "div",
                 this.element,
-                ["header__element"],
+                [`header__element`],
                 `x-${i}`,
                 `x-${i + 1}`,
                 true,
             );
         }
 
+        // Стиль для таблиці
         let x_template_areas = "";
         for (let i = 0; i < main_count + added_count; i++) {
             x_template_areas += `x-${i} `;
@@ -47,7 +53,8 @@ class TableauView {
         this.element.style.gridTemplateColumns = `repeat(${3 + main_count + added_count}, 1fr)`;
     }
 
-    show_for_first(basis, free, coefficients, eval_column, goal_coefficients) {
+    // Спершу в нас немає елементів у таблиці, тому тут ми їх створюємо.
+    show_first(basis, free, coefficients, eval_column, goal_coefficients) {
         for (let i = 0; i < coefficients.length; i++) {
             createElement(
                 "div",
@@ -95,9 +102,10 @@ class TableauView {
         }
     }
 
+    // Тут ми оновлюємо текст всередині вже існуючих клітинок.
     show(basis, free, coefficients, eval_column, goal_coefficients, f_value) {
         if (!document.getElementById(`x-${0}-${0}`)) {
-            this.show_for_first(
+            this.show_first(
                 basis,
                 free,
                 coefficients,
@@ -106,6 +114,7 @@ class TableauView {
             );
             return;
         }
+
         for (let i = 0; i < basis.length; i++) {
             document.getElementById(`b-${i}`).innerText = `x${basis[i]}`;
             document.getElementById(`f-${i}`).innerText = roundstr(free[i]);
@@ -125,6 +134,8 @@ class TableauView {
             );
         }
     }
+
+    // Підсвічуємо рядок вільних членів (після знаходження розв'язку)
     highight_free(free) {
         for (let i = 0; i < free.length; i++) {
             document.getElementById(`f-${i}`).classList.add("free-highlighted");
